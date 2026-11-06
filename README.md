@@ -1,54 +1,23 @@
-# NoiseLab Pro
+# NoiseLab Pro — corrected standalone build
 
-Environmental sound monitoring and field-survey web app for Kounik De Sarkar.
+## Fix your existing GitHub Pages website
 
-## Upload to GitHub
+1. Extract this ZIP.
+2. In the repository serving https://kouniks.github.io/NoiseLab-Pro/, replace the existing root-level `index.html` with this ZIP's `index.html` and commit the change.
+3. Wait for the GitHub Pages deployment to finish, then refresh the site with Ctrl+F5.
 
-1. Extract `NoiseLab_Pro_GitHub.zip`.
-2. Upload **all extracted contents** to your repository, preserving the `assets` folder.
-3. Keep `index.html` at the repository root, alongside this README.
-4. Enable GitHub Pages to serve the repository root from your chosen branch.
-5. Open the resulting HTTPS website. No build or package installation is needed.
+The app's design, code, audio processor, logo and fonts are embedded directly in `index.html`. It does not need an `assets` folder. Existing asset files may remain; this build does not use them. If you upload the whole package, keep `index.html` directly at the repository root, not inside another folder. Upload the extracted files, not the ZIP itself.
 
-Deployment documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+`favicon.svg` and `social.svg` are editable graphic originals. `licenses/` contains the required license notices for the embedded fonts; retain it when redistributing the package. Font license notices are also included in index.html.
 
-## Included files
+## What caused the broken page
 
-- `index.html` — complete application interface
-- `assets/styles.css` — responsive styling
-- `assets/app.js` — microphone, charts, calibration, surveys, GPS, exports and reports
-- `assets/meter-worklet.js` — continuous audio signal processing
-- `favicon.svg` — application logo and browser icon
-- `social.svg` — social graphic source
-- `.nojekyll` — serves this static app without Jekyll processing
-- `README.md` — deployment and usage notes
+The deployed index.html was accessible, but assets/styles.css, assets/app.js and assets/meter-worklet.js returned HTTP 404 during inspection. The browser therefore displayed unstyled HTML and could not initialize the app. The fixed build eliminates those three file requests.
 
-## Use
+## Usage and measurement notes
 
-The app opens in clearly labelled demo mode. Click **Start microphone** for real measurements, then use **Calibration lab** to create a device-specific reference profile. Use **Start survey** and **Finish & save** to store a session. Saved surveys support CSV export and printable reports. JSON backup exports all saved surveys and profiles.
+The app opens in a clearly labelled simulated demo. Click Start microphone to measure real input. Real microphone access requires a supported browser, HTTPS or localhost, and permission. A device-specific reference-meter calibration is needed before interpreting absolute sound levels. Browser estimates are not certified compliance measurements.
 
-Microphone and GPS access require a supported browser, HTTPS (or localhost), and permission. Raw audio is never saved or uploaded. Records are stored in the current browser, so export backups before clearing site data. Measurements saved on another website address are not automatically carried over to your GitHub Pages address.
+Calibration profiles remain in localStorage and surveys in IndexedDB on the same website origin. Updating index.html does not change their storage keys. Exports are local CSV/JSON downloads and reports use your browser's print/PDF feature. Raw microphone audio is never uploaded or saved.
 
-Keep the tab visible while recording: hiding it stops and saves the survey to protect measurement timing. Microphone disconnection or audio suspension also stops recording.
-
-Optional Google Fonts are loaded when internet access permits; system fonts are used otherwise. The app does not require any external JavaScript libraries.
-
-## Local preview
-
-Run from this folder:
-
-```sh
-python -m http.server 8000
-```
-
-Then open http://localhost:8000 in your browser. Use a local server rather than opening index.html directly, because the AudioWorklet needs a proper web origin.
-
-## Social previews
-
-The included social.svg is editable artwork. For reliable WhatsApp and other social previews, export it to a 1200 × 630 PNG and update og:image and twitter:image in index.html to that PNG's absolute published HTTPS URL. SVG social previews are not supported consistently.
-
-## Measurement limitations
-
-Browser readings are research-support estimates, not certified IEC 61672 measurements. Absolute sound pressure levels require reference-meter calibration and validation of the complete microphone/device/browser setup. The A/C digital filters use a bilinear approximation normalized at 1 kHz; the empirical sensitivity offset does not correct microphone frequency response. The same offset is used for A, C and Z. Statistical levels and extrema are based on sampled FAST readings. Ambient-noise reference values do not establish compliance.
-
-Demo recording, saved-record persistence, CSV downloading and report rendering were tested. DSP checks covered normalization, low-frequency weighting, timing and clipping at 44.1 and 48 kHz. Actual microphone sensitivity and physical reference-meter calibration still require hardware validation.
+For local preview, run `python -m http.server 8000` in the extracted folder and open http://localhost:8000. Opening the HTML directly is sufficient to inspect the design and demo, but microphone features should be used over HTTPS or localhost.
