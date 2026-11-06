@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080f1d">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="NoiseLab Pro — a calibration-first, privacy-conscious, browser-based environmental sound measurement and field survey research toolkit developed by Kounik De Sarkar.">
+  <meta name="author" content="Kounik De Sarkar">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NoiseLab Pro | Field Acoustic Research">
+  <meta property="og:description" content="Calibrated sound level monitoring, noise surveys, reference-meter checks and research-ready exports. Developed by Kounik De Sarkar.">
+  <!-- For reliable WhatsApp/Facebook previews, replace with your published ABSOLUTE GitHub Pages URL. -->
+  <meta property="og:image" content="./og-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NoiseLab Pro | Field Acoustic Research">
+  <meta name="twitter:image" content="./og-preview.png">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <title>NoiseLab Pro — Environmental Sound Level Research</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="#dashboard" class="brand" aria-label="NoiseLab Pro dashboard">
+        <img src="./favicon.svg" width="46" height="46" alt="NoiseLab Pro sound-wave symbol">
+        <span><strong>NoiseLab<span class="brand-accent">Pro</span></strong><small>FIELD ACOUSTICS</small></span>
+      </a>
+      <div class="sidebar-section-label">WORKSPACE</div>
+      <nav class="navigation" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="dashboard" aria-current="page"><span class="nav-symbol">◉</span>Live meter</button>
+        <button class="nav-item" data-view="calibration"><span class="nav-symbol">◈</span>Calibration lab</button>
+        <button class="nav-item" data-view="sessions"><span class="nav-symbol">▤</span>Saved surveys</button>
+        <button class="nav-item" data-view="guide"><span class="nav-symbol">ⓘ</span>Research guide</button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note"><span class="secure-bullet"></span><span>Local-first design<br><small>Raw microphone audio is not uploaded or saved.</small></span></div>
+      <div class="sidebar-credit">ANERG · ESED · IIT Bombay<br><span>Environmental measurement tools</span></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-start"><button id="menuToggle" class="menu-toggle icon-btn" aria-label="Toggle navigation">☰</button><span class="crumb">RESEARCH TOOLS <span>/</span> NOISE MONITORING</span></div>
+        <div class="topbar-actions"><span id="secureIndicator" class="status-pill"><span class="status-dot idle"></span><span id="globalStatus">Microphone idle</span></span><button id="btnShareApp" class="share-app" title="Share this app">↗ Share</button><a class="small-home" href="https://sites.google.com/view/kounik" target="_blank" rel="noopener noreferrer">Research homepage ↗</a></div>
+      </header>
+      <main class="main-content">
+        <section id="view-dashboard" class="view active" aria-labelledby="dashboardTitle">
+          <div class="page-heading"><div><div class="eyebrow">NOISE MONITORING STUDIO <span class="tiny-pill">BETA 1.0</span></div><h1 id="dashboardTitle">Live sound level meter</h1><p>Calibration-first acoustics, designed for environmental field surveys.</p></div><div class="heading-actions"><button id="btnStartMic" class="btn primary">◉ Start microphone</button><button id="btnStopMic" class="btn subtle" disabled>■ Stop</button></div></div>
+          <div class="notice" id="topNotice"><strong>Scientific use notice.</strong> A phone microphone cannot provide absolute dB SPL without a valid device-specific calibration. Browser measurements are screening/research-support data, not certified IEC 61672 or regulatory compliance measurements.</div>
+          <div class="dashboard-grid">
+            <div class="left-stack">
+              <div class="panel meter-panel">
+                <div class="panel-heading"><div><span class="panel-kicker">REAL-TIME METER</span><h2>Sound level</h2></div><span id="calStatusBadge" class="chip warning">Not calibrated</span></div>
+                <div class="main-meter">
+                  <svg class="gauge" viewBox="0 0 300 160" aria-hidden="true"><path class="gauge-track" d="M 30 140 A 120 120 0 0 1 270 140" pathLength="100"/><path id="gaugeProgress" class="gauge-progress" d="M 30 140 A 120 120 0 0 1 270 140" pathLength="100" stroke-dasharray="0 100"/><g stroke="#7e8aa0" stroke-width="1.2" opacity="0.7"><line x1="30" y1="142" x2="41" y2="142"/><line x1="258" y1="142" x2="269" y2="142"/></g></svg>
+                  <div class="gauge-number"><span id="levelDisplay">—</span><span id="levelUnit">dBFS</span><small id="meterLabel">Awaiting microphone</small></div>
+                </div>
+                <div class="meter-scale"><span id="scaleLeft">−90</span><span id="scaleMid">−45</span><span id="scaleRight">0 dBFS</span></div>
+                <div class="meter-controls">
+                  <label>Frequency weighting<select id="weighting" class="select"><option value="A">A-weighted</option><option value="C">C-weighted</option><option value="Z">Z-weighted</option></select></label>
+                  <label>Time weighting<select id="timeWeight" class="select"><option value="fast">FAST · 125 ms</option><option value="slow">SLOW · 1 second</option></select></label>
+                </div>
+                <div id="meterAlert" class="meter-alert">No microphone active. Your device will ask permission when you start.</div>
+              </div>
+              <div class="panel chart-panel"><div class="panel-heading"><div><span class="panel-kicker">TIME HISTORY</span><h2>Live acoustic signal</h2></div><span class="mini-muted" id="chartWindowLabel">Last 30 seconds</span></div><div class="chart-wrap"><canvas id="historyChart" width="880" height="270" aria-label="Noise level time history chart"></canvas></div><div class="chart-footer"><span><i class="legend-line"></i> <span id="chartLegend">Uncalibrated digital level (dBFS)</span></span><span id="chartRange">No samples</span></div></div>
+              <div class="panel spectrum-panel"><div class="panel-heading"><div><span class="panel-kicker">FREQUENCY DOMAIN</span><h2>Live frequency spectrum</h2></div><span class="mini-muted">Relative dBFS • not calibrated</span></div><div class="spectrum-wrap"><canvas id="spectrumChart" width="880" height="220" aria-label="Log-frequency relative spectrum"></canvas></div><p class="tiny-help">Live 2048-point FFT from the selected microphone. Relative spectral shape only; not a calibrated octave-band analyzer or sound pressure spectrum.</p></div>
+              <div class="panel session-panel"><div class="panel-heading"><div><span class="panel-kicker">FIELD SESSION</span><h2>Record a noise survey</h2></div><span id="sessionStatus" class="chip neutral">Ready</span></div>
+                <label class="duration-picker">Automatic stop <select id="fieldDuration" class="select"><option value="0">Manual</option><option value="60">1 minute</option><option value="300">5 minutes</option><option value="600">10 minutes</option><option value="900">15 minutes</option><option value="1800">30 minutes</option><option value="3600">60 minutes</option></select></label><div class="session-actions"><button id="btnNewSession" class="btn primary" disabled>● Start survey</button><button id="btnFinishSession" class="btn subtle" disabled>■ Finish & save</button><button id="btnExportSessionCSV" class="btn outline" disabled>↓ Export CSV</button><button id="btnReport" class="btn outline" disabled>▤ Report</button></div>
+                <div class="session-brief"><span><b id="sessionTimer">00:00</b><small>Measured time</small></span><span><b id="sessionFrames">0</b><small>Data points</small></span><span><b id="sessionQuality">—</b><small>Data quality</small></span></div>
+                <div class="field-form">
+                  <label>Project <input id="fieldProject" type="text" maxlength="100" placeholder="e.g. Roadside noise survey"></label>
+                  <label>Site / station ID <input id="fieldSite" type="text" maxlength="100" placeholder="e.g. MUM-RD-01"></label>
+                  <label>Surveyor <input id="fieldOperator" type="text" maxlength="100" placeholder="Researcher name"></label>
+                  <label>Area classification <select id="fieldArea" class="select"><option value="residential">Residential</option><option value="commercial">Commercial</option><option value="industrial">Industrial</option><option value="silence">Silence zone</option></select></label>
+                  <label class="span-2">Site description / dominant sources <input id="fieldContext" type="text" maxlength="240" placeholder="Road traffic, construction, market, school..."></label>
+                  <label class="span-2">Field notes <textarea id="fieldNotes" rows="2" maxlength="2500" placeholder="Wind conditions, instrument position, unusual events, observed activities..."></textarea></label>
+                  <div class="geo-field span-2"><button id="btnGPS" class="btn outline">◎ Get GPS location</button><span id="gpsStatus">Location not captured</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="right-stack">
+              <div class="panel summary-panel"><div class="panel-heading"><div><span class="panel-kicker">INTEGRATED STATISTICS</span><h2>Session metrics</h2></div><span class="mini-muted">Calibrated only</span></div>
+                <div class="stat-grid">
+                  <div class="stat-tile prominent"><span>LAeq,T</span><b id="metricLAeq">—</b><small>dB(A) · energy average</small></div>
+                  <div class="stat-tile"><span>LAFmax</span><b id="metricMax">—</b><small>dB(A)</small></div>
+                  <div class="stat-tile"><span>LAFmin</span><b id="metricMin">—</b><small>dB(A)</small></div>
+                  <div class="stat-tile"><span>L10</span><b id="metricL10">—</b><small>dB(A)</small></div>
+                  <div class="stat-tile"><span>L50</span><b id="metricL50">—</b><small>dB(A)</small></div>
+                  <div class="stat-tile"><span>L90</span><b id="metricL90">—</b><small>dB(A)</small></div>
+                </div><p class="stat-footnote">L10/L50/L90 are sampled exceedance levels from 100 ms FAST readings (approximate statistical levels).</p></div>
+              <div class="panel device-panel"><div class="panel-heading"><div><span class="panel-kicker">MEASUREMENT CHAIN</span><h2>Microphone & calibration</h2></div></div><label class="form-label">Audio input<select id="inputDevice" class="select"><option value="">System default</option></select></label><div class="device-list"><div><span>Input device</span><b id="micInfo">Not connected</b></div><div><span>Sample rate</span><b id="sampleRateInfo">—</b></div><div><span>Calibration profile</span><b id="currentCalibration">No active profile</b></div><div><span>Signal processing</span><b id="micProcessing">Not checked</b></div><div><span>Clipping</span><b id="clipInfo">—</b></div></div><button class="text-link" data-go="calibration">Open calibration lab →</button></div>
+              <div class="panel standards-panel"><div class="panel-heading"><div><span class="panel-kicker">INDIA · CPCB / NOISE RULES</span><h2>Ambient noise reference</h2></div></div><div class="limit-banner"><div><span id="limitArea">Residential • daytime</span><strong id="standardLimit">55 <small>dB(A) Leq</small></strong></div><span class="limit-annotation">Reference limit</span></div><div id="standardCompare" class="comparison-text">Start a calibrated survey to compare its LAeq with the selected zone's limit.</div><p class="regulatory-note">Indicative comparison only. Official compliance requires an appropriate measurement method, instrument, duration and regulatory context. Day 06:00–22:00 local; night 22:00–06:00 local.</p><a class="resource-link" href="https://cpcb.nic.in/displaypdf.php?id=Tm9pc2UtU3RhbmRhcmRzL25vaXNlX3J1bGVzXzIwMDAucGRm" target="_blank" rel="noopener noreferrer">View CPCB noise rules ↗</a></div>
+              <div class="panel privacy-panel"><span class="panel-kicker">PRIVACY & QUALITY</span><div class="privacy-row">✓ Raw audio is not stored or transmitted.</div><div class="privacy-row">✓ Survey records stay on this browser until exported or deleted.</div><div class="privacy-row">! Unverified phone microphones are not certified meters.</div><div class="privacy-row">! Keep device active and screen unlocked during recording.</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-calibration" class="view" aria-labelledby="calibrationTitle"><div class="page-heading"><div><div class="eyebrow">REFERENCE-METER WORKFLOW</div><h1 id="calibrationTitle">Calibration laboratory</h1><p>Estimate the sensitivity offset of your particular microphone + device + browser setup.</p></div><button class="btn outline" data-go="dashboard">← Live meter</button></div>
+          <div class="notice"><strong>Important:</strong> A reference-meter field comparison gives an empirical offset, not IEC traceability or a certified instrument class. Calibration should use a steady, controlled sound environment; record simultaneous LAeq measurements and validate independently across levels and spectra.</div>
+          <div class="cal-grid">
+            <div class="panel"><div class="panel-heading"><div><span class="panel-kicker">STEP 1 · ACQUIRE</span><h2>Reference comparison</h2></div><span id="captureBadge" class="chip neutral">Ready to capture</span></div>
+              <div class="how-to"><span>1</span><p>Start the microphone on the Live meter tab (disable device noise processing where possible).</p></div><div class="how-to"><span>2</span><p>Place the reference meter and phone close together without obstructing either microphone. Use a steady sound source.</p></div><div class="how-to"><span>3</span><p>Capture the phone's 10-second signal alongside the reference meter. Then enter the meter's actual <b>LAeq over that same interval</b> and add the paired observation.</p></div>
+              <div class="form-stack"><label>Profile name<input id="calProfileName" placeholder="e.g. Pixel 8 · USB mic · Chrome" maxlength="90"></label><label>Reference meter LAeq over the captured 10 s (dB(A))<input id="calReference" type="number" min="25" max="135" step="0.1" placeholder="Enter the reference reading after capture"></label><div class="cal-buttons"><button id="btnCaptureCal" class="btn primary">◎ Capture 10 s calibration</button><button id="btnCaptureValidation" class="btn outline">◇ Independent validation</button></div><div class="capture-progress"><div id="captureProgressFill"></div></div><p id="captureFeedback" class="inline-helper">Start capture while the reference meter measures the same 10-second interval. Enter its LAeq after capture, then add the observation.</p><div class="cal-buttons"><button id="btnCommitCapture" class="btn primary" disabled>＋ Add paired observation</button><button id="btnDiscardCapture" class="btn outline" disabled>Discard capture</button></div></div>
+              <div class="cal-result" id="calResult"><div><small>Proposed calibration offset</small><strong id="calOffset">—</strong></div><div><small>Calibration spread</small><strong id="calSpread">—</strong></div><div><small>Validation MAE</small><strong id="valError">—</strong></div></div><div class="cal-buttons"><button id="btnSaveProfile" class="btn primary" disabled>Save & activate profile</button><button id="btnClearDraft" class="btn outline">Clear draft</button></div>
+            </div>
+            <div class="right-stack"><div class="panel"><div class="panel-heading"><div><span class="panel-kicker">STEP 2 · REVIEW</span><h2>Calibration observations</h2></div></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Type</th><th>Reference</th><th>Raw phone</th><th>Offset / error</th></tr></thead><tbody id="calPointsBody"><tr><td colspan="4" class="empty-cell">No observations yet</td></tr></tbody></table></div><p class="tiny-help">Calibration offset = reference dB(A) − measured A-weighted dBFS. The applied correction is the median of paired offsets; this is not a frequency-response calibration.</p></div>
+            <div class="panel"><div class="panel-heading"><div><span class="panel-kicker">DEVICE-SPECIFIC</span><h2>Saved profiles</h2></div></div><div id="profilesList" class="profiles-list"><p class="muted">No saved profiles yet.</p></div></div>
+            <div class="panel"><div class="panel-heading"><div><span class="panel-kicker">UNDERSTAND YOUR RESULTS</span><h2>Validation guidance</h2></div></div><p class="muted">Measure independent sounds at multiple levels, frequencies and locations. Document wind, background noise, microphone orientation, AGC/NS/EC settings and the reference meter calibration certificate.</p><p class="muted">A single numerical offset cannot fix clipping, nonlinear automatic gain, spectral sensitivity errors or environmental effects.</p><button class="text-link" data-go="guide">Read full research procedure →</button></div></div>
+          </div>
+        </section>
+
+        <section id="view-sessions" class="view" aria-labelledby="sessionsTitle"><div class="page-heading"><div><div class="eyebrow">LOCAL RESEARCH ARCHIVE</div><h1 id="sessionsTitle">Saved field surveys</h1><p>All records are stored locally in this browser. Export backups before clearing site data.</p></div><button id="btnExportAllJSON" class="btn outline">↓ Backup all (JSON)</button></div><div class="panel"><div class="panel-heading"><div><span class="panel-kicker">SESSION ARCHIVE</span><h2>Measurement records</h2></div><span id="savedCount" class="chip neutral">0 surveys</span></div><div class="table-scroll"><table class="data-table sessions-table"><thead><tr><th>Recorded</th><th>Project / station</th><th>LAeq,T</th><th>Duration</th><th>Quality</th><th>Actions</th></tr></thead><tbody id="sessionsBody"><tr><td colspan="6" class="empty-cell">No surveys saved yet.</td></tr></tbody></table></div></div><div class="notice lower"><strong>Reproducibility:</strong> Each survey export includes sampling settings, applied calibration snapshot, detected signal processing, clipping indicators, selected site information and time-series summaries. Check browser/storage persistence before field deployment.</div></section>
+
+        <section id="view-guide" class="view" aria-labelledby="guideTitle"><div class="page-heading"><div><div class="eyebrow">FIELD METHODS & LIMITATIONS</div><h1 id="guideTitle">Research and measurement guide</h1><p>How to use NoiseLab responsibly for environmental acoustic investigations.</p></div></div>
+          <div class="guide-grid"><article class="panel prose"><span class="panel-kicker">01 · BEFORE RECORDING</span><h2>Preparation</h2><p>Prefer an external measurement-grade microphone with documented frequency response. Verify calibration with a suitable acoustic calibrator if compatible; use a reference sound level meter for independent cross-checks. Avoid wind, mechanical contact, obstructions and reflections. Set microphone height/location and the sampling duration in your study protocol.</p><p>Chrome/Edge may request microphone permission. The app asks to disable automatic gain control, noise suppression and echo cancellation, but the device/browser might override these settings. An active audio path and unchanged gain are essential.</p></article>
+          <article class="panel prose"><span class="panel-kicker">02 · REFERENCE COMPARISON</span><h2>Calibrate and validate</h2><p>Capture steady sound for 10 seconds while a reference meter records the same interval. Afterward, enter the reference meter's actual A-weighted equivalent level and add the paired observation. Repeat at multiple sound levels; save the median offset only after inspecting the variation. Use independent validation measurements that were not used to estimate the offset.</p><p>A one-frequency sensitivity calibration does not demonstrate broadband frequency-response compliance. Any change of microphone, device, browser audio path, or gain configuration requires reassessment.</p></article>
+          <article class="panel prose"><span class="panel-kicker">03 · MEASUREMENT DEFINITIONS</span><h2>What is being calculated?</h2><p><b>LAeq,T</b> is 10 × log₁₀ of the mean squared A-weighted signal after calibration. <b>FAST</b> (125 ms) and <b>SLOW</b> (1 s) use exponential time averaging. <b>LAFmax/min</b> are extrema of sampled 100 ms FAST readings during a survey; they can miss inter-frame extrema. <b>L10/L50/L90</b> use percentiles of these sampled FAST readings.</p><p>A/C weighting filters are bilinear-transformed digital approximations normalized at 1 kHz, not independently certified IEC frequency-weighting responses. Do not use this application for legal or occupational noise compliance decisions.</p></article>
+          <article class="panel prose"><span class="panel-kicker">04 · INDIA NOISE RULES</span><h2>Indicative outdoor comparisons</h2><table class="small-standards"><thead><tr><th>Zone</th><th>Day</th><th>Night</th></tr></thead><tbody><tr><td>Industrial</td><td>75</td><td>70</td></tr><tr><td>Commercial</td><td>65</td><td>55</td></tr><tr><td>Residential</td><td>55</td><td>45</td></tr><tr><td>Silence zone</td><td>50</td><td>40</td></tr></tbody></table><p>Values in dB(A) Leq; day 06:00–22:00, night 22:00–06:00 local time. A single short measurement does not establish regulatory compliance.</p></article>
+          <article class="panel prose"><span class="panel-kicker">05 · DATA PRIVACY</span><h2>Local data and exports</h2><p>Raw audio remains in the AudioWorklet processing stream and is never saved or uploaded. Calibration profiles are stored in localStorage; completed surveys in IndexedDB. CSV exports contain per-second energy levels and metadata; JSON backup contains all saved surveys. Deleting browser site data can remove your records.</p><p>Location is requested only when you click Get GPS location. Geolocation requires permission and a secure origin (GitHub Pages supports HTTPS).</p></article>
+          <article class="panel prose"><span class="panel-kicker">06 · AUTHOR & RESOURCES</span><h2>Project credits</h2><p>Developed by <a href="https://sites.google.com/view/kounik" target="_blank" rel="noopener noreferrer">Kounik De Sarkar</a>, Ph.D. Research Scholar, Air & Noise Exposure Research Group (ANERG), Environmental Science and Engineering Department, IIT Bombay.</p><p>Mentors: Prof. Harish C. Phuleria and Prof. Arnab Jana.</p><p><a href="https://www.cdc.gov/niosh/noise/about/app.html" target="_blank" rel="noopener noreferrer">NIOSH Sound Level Meter research ↗</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="noopener noreferrer">Web Audio API documentation ↗</a><br><a href="https://cpcb.nic.in/displaypdf.php?id=Tm9pc2UtU3RhbmRhcmRzL25vaXNlX3J1bGVzXzIwMDAucGRm" target="_blank" rel="noopener noreferrer">Indian ambient noise rules ↗</a></p></article></div>
+        </section>
+      </main>
+      <footer class="app-footer"><div>©2026 Dashboard developed by <a href="https://sites.google.com/view/kounik" target="_blank" rel="noopener noreferrer">Kounik De Sarkar</a></div><a href="https://sites.google.com/view/kounik" target="_blank" rel="noopener noreferrer">Homepage</a><em>Mentors: Prof. Harish C. Phuleria &amp; Prof. Arnab Jana</em></footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>

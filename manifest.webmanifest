@@ -1,0 +1,16 @@
+{
+  "name": "NoiseLab Pro | Field Acoustic Research",
+  "short_name": "NoiseLab Pro",
+  "description": "Calibration-first environmental noise monitoring and field research tool by Kounik De Sarkar.",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080f1d",
+  "theme_color": "#080f1d",
+  "orientation": "any",
+  "icons": [
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
