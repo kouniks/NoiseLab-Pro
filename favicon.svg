@@ -1,16 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">NoiseLab Pro logo</title><desc id="desc">Cyan sound meter symbol and acoustic signal waves on a midnight-blue rounded square.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#152c46"/><stop offset=".55" stop-color="#091728"/><stop offset="1" stop-color="#0c2030"/></linearGradient>
-    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#65f1da"/><stop offset="1" stop-color="#419af7"/></linearGradient>
-    <filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter>
-  </defs>
-  <rect x="3" y="3" width="506" height="506" rx="116" fill="url(#bg)"/>
-  <rect x="18" y="18" width="476" height="476" rx="102" fill="none" stroke="#6fe5df" stroke-opacity=".18" stroke-width="4"/>
-  <circle cx="256" cy="261" r="162" stroke="#2a5370" fill="none" stroke-width="5" stroke-dasharray="3 16" opacity=".55"/>
-  <path d="M106 293h67l26-79 52 147 35-105 22 37h98" fill="none" stroke="#63eadf" opacity=".32" stroke-width="31" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
-  <path d="M94 292h73l31-79 53 148 34-106 26 38h108" fill="none" stroke="url(#wave)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="99" cy="292" r="12" fill="#65ebdc"/><circle cx="412" cy="292" r="12" fill="#4aaff3"/>
-  <path d="M197 144a139 139 0 0 1 117 2" stroke="#69eadf" stroke-width="9" stroke-linecap="round" fill="none" opacity=".5"/>
-  <path d="M212 124a157 157 0 0 1 93 0" stroke="#63c6e7" stroke-width="5" stroke-linecap="round" fill="none" opacity=".4"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#d6f48c"/><g stroke="#173d37" stroke-width="5" stroke-linecap="round"><path d="M14 28v8M23 18v28M32 10v44M41 22v20M50 28v8"/></g></svg>
